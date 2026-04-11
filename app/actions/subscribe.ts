@@ -20,7 +20,7 @@ export async function subscribe(
 
   try {
     const transportOptions: SMTPTransport.Options = {
-      host: "smtp.zoho.com",
+      host: "smtp.zohocloud.ca",
       port: 465,
       secure: true,
       authMethod: "LOGIN",
