@@ -19,11 +19,29 @@ const bricolage = Bricolage_Grotesque({
 
 export const metadata: Metadata = {
   title: "cazlae — Coming Soon",
-  description: "Something is coming.",
+  description: "Clothing built around intention — minimal by design, precise in every detail. Join the cazlae waitlist for early access.",
+  metadataBase: new URL("https://cazlae.com"),
+  keywords: ["cazlae", "minimal fashion", "clothing brand", "coming soon", "waitlist"],
   openGraph: {
     title: "cazlae — Coming Soon",
-    description: "Something is coming.",
+    description: "Clothing built around intention — minimal by design, precise in every detail. Join the cazlae waitlist for early access.",
+    url: "https://cazlae.com",
+    siteName: "cazlae",
+    images: [{ url: "/logo.jpeg", width: 800, height: 800, alt: "cazlae" }],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "cazlae — Coming Soon",
+    description: "Clothing built around intention — minimal by design, precise in every detail.",
     images: ["/logo.jpeg"],
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
+  alternates: {
+    canonical: "https://cazlae.com",
   },
 };
 
