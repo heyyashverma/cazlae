@@ -20,6 +20,7 @@ export default function VideoBackground() {
       muted
       loop
       playsInline
+      poster="/poster.jpg"
       onCanPlay={() => setReady(true)}
       className="absolute inset-0 w-full h-full object-cover"
       style={{

@@ -4,7 +4,7 @@ import { Bricolage_Grotesque } from "next/font/google";
 import "./globals.css";
 
 const rekalgera = localFont({
-  src: "../fonts/Rekalgera-Regular.otf",
+  src: "../fonts/Rekalgera-Regular.woff2",
   variable: "--font-rekalgera",
   display: "swap",
   fallback: ["Georgia", "serif"],
@@ -13,7 +13,7 @@ const rekalgera = localFont({
 const bricolage = Bricolage_Grotesque({
   variable: "--font-bricolage",
   subsets: ["latin"],
-  weight: ["200", "300", "400"],
+  weight: ["300", "400"],
   display: "swap",
 });
 
@@ -27,14 +27,14 @@ export const metadata: Metadata = {
     description: "Clothing built around intention — minimal by design, precise in every detail. Join the cazlae waitlist for early access.",
     url: "https://cazlae.com",
     siteName: "cazlae",
-    images: [{ url: "/logo.jpeg", width: 800, height: 800, alt: "cazlae" }],
+    images: [{ url: "/logo_opt.jpg", width: 800, height: 800, alt: "cazlae" }],
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
     title: "cazlae — Coming Soon",
     description: "Clothing built around intention — minimal by design, precise in every detail.",
-    images: ["/logo.jpeg"],
+    images: ["/logo_opt.jpg"],
   },
   robots: {
     index: true,
@@ -55,6 +55,9 @@ export default function RootLayout({
       lang="en"
       className={`${rekalgera.variable} ${bricolage.variable} h-full antialiased`}
     >
+      <head>
+        <link rel="preload" href="/poster.jpg" as="image" />
+      </head>
       <body className="min-h-full flex flex-col bg-[#090909]">{children}</body>
     </html>
   );
