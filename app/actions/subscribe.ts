@@ -1,6 +1,7 @@
 "use server";
 
 import nodemailer from "nodemailer";
+import SMTPTransport from "nodemailer/lib/smtp-transport";
 
 type SubscribeState = {
   success: boolean;
@@ -18,16 +19,17 @@ export async function subscribe(
   }
 
   try {
-    const transporter = nodemailer.createTransport({
+    const transportOptions: SMTPTransport.Options = {
       host: "smtp.zoho.com",
       port: 465,
       secure: true,
       auth: {
         type: "LOGIN",
-        user: process.env.ZOHO_EMAIL,
-        pass: process.env.ZOHO_APP_PASSWORD,
+        user: process.env.ZOHO_EMAIL!,
+        pass: process.env.ZOHO_APP_PASSWORD!,
       },
-    });
+    };
+    const transporter = nodemailer.createTransport(transportOptions);
 
     await transporter.sendMail({
       from: `"cazlae" <${process.env.ZOHO_EMAIL}>`,
