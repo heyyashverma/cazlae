@@ -23,8 +23,8 @@ export async function subscribe(
       host: "smtp.zoho.com",
       port: 465,
       secure: true,
+      authMethod: "LOGIN",
       auth: {
-        type: "LOGIN",
         user: process.env.ZOHO_EMAIL!,
         pass: process.env.ZOHO_APP_PASSWORD!,
       },
