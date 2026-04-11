@@ -19,10 +19,11 @@ export async function subscribe(
 
   try {
     const transporter = nodemailer.createTransport({
-      host: "smtp.zohocloud.ca",
+      host: "smtp.zoho.com",
       port: 465,
       secure: true,
       auth: {
+        type: "LOGIN",
         user: process.env.ZOHO_EMAIL,
         pass: process.env.ZOHO_APP_PASSWORD,
       },
