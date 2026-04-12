@@ -31,19 +31,25 @@ export async function subscribe(
     };
     const transporter = nodemailer.createTransport(transportOptions);
 
-    await transporter.sendMail({
-      from: `"cazlae" <${process.env.ZOHO_EMAIL}>`,
-      to: process.env.ZOHO_EMAIL,
-      subject: "New waitlist signup — cazlae",
-      html: `
-        <div style="font-family:sans-serif;max-width:480px;margin:0 auto">
-          <h2 style="font-size:16px;font-weight:600;margin-bottom:8px">New waitlist signup</h2>
-          <p style="font-size:14px;color:#555;margin:0">
-            <strong>${email}</strong> just joined the cazlae waitlist.
-          </p>
-        </div>
-      `,
-    });
+    await Promise.all([
+      transporter.sendMail({
+        from: `"cazlae" <${process.env.ZOHO_EMAIL}>`,
+        to: process.env.ZOHO_EMAIL,
+        subject: "New waitlist signup — cazlae",
+        html: `
+          <div style="font-family:sans-serif;max-width:480px;margin:0 auto">
+            <h2 style="font-size:16px;font-weight:600;margin-bottom:8px">New waitlist signup</h2>
+            <p style="font-size:14px;color:#555;margin:0">
+              <strong>${email}</strong> just joined the cazlae waitlist.
+            </p>
+          </div>
+        `,
+      }),
+      fetch("https://script.google.com/macros/s/AKfycbw2mV9OJxG9BKdhIhgwYtgJ_KctJVxxRPfK_EWRDAczi5T7hi-iW_veuL5MqWhPaD84Sg/exec", {
+        method: "POST",
+        body: JSON.stringify({ email }),
+      }),
+    ]);
 
     return { success: true, error: null };
   } catch (err) {
