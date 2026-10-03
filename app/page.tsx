@@ -1,6 +1,13 @@
 import EmailForm from "./components/email-form";
 import Wordmark from "./components/wordmark";
 
+const socials = [
+  { label: "Instagram", href: "https://instagram.com/shopcazlae" },
+  { label: "X", href: "https://x.com/cazlae" },
+  { label: "LinkedIn", href: "https://linkedin.com/company/cazlae" },
+  { label: "TikTok", href: "https://tiktok.com/@shopcazlae" },
+];
+
 export default function Home() {
   return (
     <>
@@ -45,22 +52,19 @@ export default function Home() {
             <p className="type-caption">Based in Toronto.</p>
           </div>
           <div className="type-small flex flex-col gap-3 md:items-end">
-            <ul className="flex gap-6">
-              <li>
-                <a
-                  href="https://instagram.com/shopcazlae"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="underline underline-offset-4"
-                >
-                  Instagram
-                </a>
-              </li>
-              {/* TODO: other social links — confirm before enabling
-              <li><a href="https://tiktok.com/@cazlae">TikTok</a></li>
-              <li><a href="https://x.com/cazlae">X</a></li>
-              <li><a href="https://www.linkedin.com/company/cazlae/">LinkedIn</a></li>
-              */}
+            <ul className="flex flex-wrap gap-x-6 gap-y-2">
+              {socials.map(({ label, href }) => (
+                <li key={label}>
+                  <a
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="underline underline-offset-4"
+                  >
+                    {label}
+                  </a>
+                </li>
+              ))}
             </ul>
             <p>
               © {new Date().getFullYear()} Cazlae
