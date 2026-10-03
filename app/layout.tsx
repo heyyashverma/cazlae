@@ -1,39 +1,48 @@
-import type { Metadata } from "next";
-import localFont from "next/font/local";
-import { Bricolage_Grotesque } from "next/font/google";
+import type { Metadata, Viewport } from "next";
+import { Instrument_Serif, Hanken_Grotesk } from "next/font/google";
 import "./globals.css";
 
-const rekalgera = localFont({
-  src: "../fonts/Rekalgera-Regular.woff2",
-  variable: "--font-rekalgera",
+const instrumentSerif = Instrument_Serif({
+  variable: "--font-instrument-serif",
+  subsets: ["latin"],
+  weight: "400",
   display: "swap",
   fallback: ["Georgia", "serif"],
 });
 
-const bricolage = Bricolage_Grotesque({
-  variable: "--font-bricolage",
+const hankenGrotesk = Hanken_Grotesk({
+  variable: "--font-hanken-grotesk",
   subsets: ["latin"],
-  weight: ["300", "400"],
+  weight: ["400", "500"],
   display: "swap",
+  fallback: ["system-ui", "sans-serif"],
 });
 
+const title = "cazlae — Made to outlast trends";
+const description =
+  "Everyday essentials, precisely cut. Join the waitlist for Drop 01.";
+
+// TODO: favicon (app/favicon.ico) left unchanged — the monogram isn't decided yet.
 export const metadata: Metadata = {
-  title: "cazlae — Coming Soon",
-  description: "Clothing built around intention — minimal by design, precise in every detail. Join the cazlae waitlist for early access.",
+  title,
+  description,
   metadataBase: new URL("https://cazlae.com"),
-  keywords: ["cazlae", "minimal fashion", "clothing brand", "coming soon", "waitlist"],
+  keywords: ["cazlae", "waitlist"],
   openGraph: {
-    title: "cazlae — Coming Soon",
-    description: "Clothing built around intention — minimal by design, precise in every detail. Join the cazlae waitlist for early access.",
+    title,
+    description,
     url: "https://cazlae.com",
     siteName: "cazlae",
+    // TODO: swap to /og.png (1200×630, "Open Graph link preview" frame in Figma)
+    // once it is exported to /public/og.png. This is still the pre-rebrand image.
     images: [{ url: "/logo_opt.jpg", width: 800, height: 800, alt: "cazlae" }],
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "cazlae — Coming Soon",
-    description: "Clothing built around intention — minimal by design, precise in every detail.",
+    title,
+    description,
+    // TODO: swap to /og.png, as above.
     images: ["/logo_opt.jpg"],
   },
   robots: {
@@ -45,6 +54,12 @@ export const metadata: Metadata = {
   },
 };
 
+export const viewport: Viewport = {
+  themeColor: "#1E3328",
+  colorScheme: "light",
+  viewportFit: "cover",
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -53,12 +68,9 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${rekalgera.variable} ${bricolage.variable} h-full antialiased`}
+      className={`${instrumentSerif.variable} ${hankenGrotesk.variable} h-full antialiased`}
     >
-      <head>
-        <link rel="preload" href="/poster.jpg" as="image" />
-      </head>
-      <body className="min-h-full flex flex-col bg-[#090909]">{children}</body>
+      <body className="relative min-h-full flex flex-col">{children}</body>
     </html>
   );
 }
