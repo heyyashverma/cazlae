@@ -16,9 +16,7 @@ const SANS = "'Hanken Grotesk', Arial, Helvetica, sans-serif";
 // TODO: business mailing address — required under CASL before the subscriber
 // email is switched on (to be confirmed by @OPS).
 const MAILING_ADDRESS = "[Business mailing address]";
-// TODO: real unsubscribe mechanism and privacy page — neither exists yet.
-const UNSUBSCRIBE_URL = "#";
-const PRIVACY_URL = "#";
+// TODO: add a Privacy link to the subscriber footer once a privacy page exists.
 
 function escapeHtml(value: string) {
   return value
@@ -93,13 +91,15 @@ function shell({ preheader, label, headline, bodyHtml, cta, footerHtml }: Shell)
 }
 
 /** Sent to a new subscriber. Not switched on yet — see subscribe.ts. */
-export function subscriberEmail() {
+export function subscriberEmail(replyAddress: string) {
+  // Interim unsubscribe: a reply to the brand inbox, handled by hand.
+  const unsubscribeUrl = `mailto:${replyAddress}?subject=Unsubscribe`;
   const subject = "The first drop is almost here.";
   const body =
     "Three essentials in cotton. You’re on the list, so you’ll hear before anyone else.";
   return {
     subject,
-    text: `${subject}\n\n${body}\n\nPreview the collection: ${SITE_URL}\n\nCazlae · ${MAILING_ADDRESS}`,
+    text: `${subject}\n\n${body}\n\nPreview the collection: ${SITE_URL}\n\nCazlae · ${MAILING_ADDRESS}\nTo unsubscribe, reply to this email with "Unsubscribe".`,
     html: shell({
       preheader: body,
       label: "Drop 01",
@@ -107,7 +107,7 @@ export function subscriberEmail() {
       bodyHtml: body,
       cta: { label: "Preview the collection", href: SITE_URL },
       footerHtml: `Cazlae · ${MAILING_ADDRESS}<br>
-                <a href="${UNSUBSCRIBE_URL}" style="color:${ESPRESSO};text-decoration:underline">Unsubscribe</a> · <a href="${PRIVACY_URL}" style="color:${ESPRESSO};text-decoration:underline">Privacy</a>`,
+                <a href="${unsubscribeUrl}" style="color:${ESPRESSO};text-decoration:underline">Unsubscribe</a>`,
     }),
   };
 }

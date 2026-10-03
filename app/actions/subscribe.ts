@@ -4,8 +4,8 @@ import nodemailer from "nodemailer";
 import SMTPTransport from "nodemailer/lib/smtp-transport";
 import { notificationEmail, subscriberEmail } from "../emails/waitlist";
 
-// TODO: switch on once @OPS confirms the CASL details — the template still
-// needs a real mailing address and a working unsubscribe link.
+// TODO: switch on once the real mailing address is in emails/waitlist.ts
+// (required under CASL).
 const SEND_SUBSCRIBER_EMAIL = false;
 
 type SubscribeState = {
@@ -54,7 +54,7 @@ export async function subscribe(
         .sendMail({
           from: `"cazlae" <${process.env.ZOHO_EMAIL}>`,
           to: email,
-          ...subscriberEmail(),
+          ...subscriberEmail(process.env.ZOHO_EMAIL!),
         })
         .catch((err) => console.error("Subscriber email error:", err));
     }
