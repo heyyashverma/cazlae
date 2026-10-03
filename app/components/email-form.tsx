@@ -71,6 +71,18 @@ export default function EmailForm() {
             )}
           </div>
 
+          {/* Honeypot — hidden from people and assistive tech; see subscribe.ts */}
+          <div aria-hidden="true" className="hidden">
+            <label htmlFor="company">Company</label>
+            <input
+              id="company"
+              type="text"
+              name="company"
+              tabIndex={-1}
+              autoComplete="off"
+            />
+          </div>
+
           {/* TODO: consent wording to be confirmed by @OPS (CASL) */}
           <label className="type-caption mt-5 flex cursor-pointer items-start gap-3">
             <input

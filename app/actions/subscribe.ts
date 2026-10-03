@@ -15,7 +15,13 @@ export async function subscribe(
   _prevState: SubscribeState,
   formData: FormData
 ): Promise<SubscribeState> {
+  // Honeypot: hidden from people, so only bots fill it. Pretend it worked.
+  if (formData.get("company")) {
+    return { success: true, error: null };
+  }
+
   const email = (formData.get("email") as string)?.trim().toLowerCase();
+  const consent = formData.get("consent") === "on";
 
   if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     return { success: false, error: "Please enter a valid email address." };
@@ -34,17 +40,21 @@ export async function subscribe(
     };
     const transporter = nodemailer.createTransport(transportOptions);
 
-    await Promise.all([
-      transporter.sendMail({
-        from: `"cazlae" <${process.env.ZOHO_EMAIL}>`,
-        to: process.env.ZOHO_EMAIL,
-        ...notificationEmail(email),
-      }),
-      fetch("https://script.google.com/macros/s/AKfycbw2mV9OJxG9BKdhIhgwYtgJ_KctJVxxRPfK_EWRDAczi5T7hi-iW_veuL5MqWhPaD84Sg/exec", {
-        method: "POST",
-        body: JSON.stringify({ email }),
-      }),
-    ]);
+    // The Apps Script (google-apps-script/Code.gs) answers "duplicate" when the
+    // address is already on the sheet; in that case no emails are sent again.
+    const sheetResponse = await fetch("https://script.google.com/macros/s/AKfycbw2mV9OJxG9BKdhIhgwYtgJ_KctJVxxRPfK_EWRDAczi5T7hi-iW_veuL5MqWhPaD84Sg/exec", {
+      method: "POST",
+      body: JSON.stringify({ email, consent }),
+    });
+    if ((await sheetResponse.text()).trim() === "duplicate") {
+      return { success: true, error: null };
+    }
+
+    await transporter.sendMail({
+      from: `"cazlae" <${process.env.ZOHO_EMAIL}>`,
+      to: process.env.ZOHO_EMAIL,
+      ...notificationEmail(email),
+    });
 
     if (SEND_SUBSCRIBER_EMAIL) {
       // A bounce here shouldn't undo a signup that is already stored.
