@@ -2,7 +2,19 @@
 // file. Table layout and inline styles only, so it survives Outlook/Gmail.
 // Web fonts often fail there: serif falls back to Georgia, sans to Arial.
 
+import { WORDMARK_PNG_BASE64 } from "./wordmark";
+
 const SITE_URL = "https://cazlae.com";
+
+const WORDMARK_CID = "wordmark@cazlae.com";
+const attachments = [
+  {
+    filename: "cazlae.png",
+    content: Buffer.from(WORDMARK_PNG_BASE64, "base64"),
+    contentType: "image/png",
+    cid: WORDMARK_CID,
+  },
+];
 
 const GREEN = "#1E3328";
 const IVORY = "#F5F0E8";
@@ -65,7 +77,7 @@ function shell({ preheader, label, headline, bodyHtml, cta, footerHtml }: Shell)
             <tr>
               <td align="center" bgcolor="${GREEN}" style="background:${GREEN};padding:34px 24px">
                 <a href="${SITE_URL}" style="text-decoration:none">
-                  <img src="${SITE_URL}/brand/cazlae-wordmark-ivory.png" width="71" height="28" alt="cazlae" style="display:block;border:0;font-family:${SERIF};font-size:28px;line-height:28px;letter-spacing:-0.02em;color:${IVORY}">
+                  <img src="cid:${WORDMARK_CID}" width="71" height="28" alt="cazlae" style="display:block;border:0;font-family:${SERIF};font-size:28px;line-height:28px;letter-spacing:-0.02em;color:${IVORY}">
                 </a>
               </td>
             </tr>
@@ -100,6 +112,7 @@ export function subscriberEmail(replyAddress: string) {
   return {
     subject,
     text: `${subject}\n\n${body}\n\nPreview the collection: ${SITE_URL}\n\nCazlae · ${MAILING_ADDRESS}\nTo unsubscribe, reply to this email with "Unsubscribe".`,
+    attachments,
     html: shell({
       preheader: body,
       label: "Drop 01",
@@ -118,6 +131,7 @@ export function notificationEmail(email: string) {
   return {
     subject: "New waitlist signup — cazlae",
     text: `${email} just joined the cazlae waitlist.`,
+    attachments,
     html: shell({
       preheader: `${safeEmail} just joined the cazlae waitlist.`,
       label: "Waitlist",
