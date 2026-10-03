@@ -2,6 +2,11 @@
 
 import nodemailer from "nodemailer";
 import SMTPTransport from "nodemailer/lib/smtp-transport";
+import { notificationEmail, subscriberEmail } from "../emails/waitlist";
+
+// TODO: switch on once @OPS confirms the CASL details — the template still
+// needs a real mailing address and a working unsubscribe link.
+const SEND_SUBSCRIBER_EMAIL = false;
 
 type SubscribeState = {
   success: boolean;
@@ -35,21 +40,24 @@ export async function subscribe(
       transporter.sendMail({
         from: `"cazlae" <${process.env.ZOHO_EMAIL}>`,
         to: process.env.ZOHO_EMAIL,
-        subject: "New waitlist signup — cazlae",
-        html: `
-          <div style="font-family:sans-serif;max-width:480px;margin:0 auto">
-            <h2 style="font-size:16px;font-weight:600;margin-bottom:8px">New waitlist signup</h2>
-            <p style="font-size:14px;color:#555;margin:0">
-              <strong>${email}</strong> just joined the cazlae waitlist.
-            </p>
-          </div>
-        `,
+        ...notificationEmail(email),
       }),
       fetch("https://script.google.com/macros/s/AKfycbw2mV9OJxG9BKdhIhgwYtgJ_KctJVxxRPfK_EWRDAczi5T7hi-iW_veuL5MqWhPaD84Sg/exec", {
         method: "POST",
         body: JSON.stringify({ email }),
       }),
     ]);
+
+    if (SEND_SUBSCRIBER_EMAIL) {
+      // A bounce here shouldn't undo a signup that is already stored.
+      await transporter
+        .sendMail({
+          from: `"cazlae" <${process.env.ZOHO_EMAIL}>`,
+          to: email,
+          ...subscriberEmail(),
+        })
+        .catch((err) => console.error("Subscriber email error:", err));
+    }
 
     return { success: true, error: null };
   } catch (err) {
