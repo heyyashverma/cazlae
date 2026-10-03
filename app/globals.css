@@ -1,12 +1,130 @@
 @import "tailwindcss";
 
+:root {
+  color-scheme: light;
+
+  --estate-green: #1e3328; /* signature colour */
+  --ivory: #f5f0e8; /* base / canvas */
+  --stone: #d8cfc0; /* secondary neutral */
+  --sand-camel: #c4b49a; /* accent neutral — never as text on ivory */
+  --espresso: #3d3935; /* secondary text */
+  --ink: #121613; /* primary text */
+  --error: #9b2c2c; /* form errors only, not a brand colour */
+
+  --gutter: clamp(1.5rem, 5.33vw, 4rem);
+}
+
 @theme inline {
-  --font-serif: var(--font-rekalgera);
-  --font-sans: var(--font-bricolage);
+  --font-serif: var(--font-instrument-serif);
+  --font-sans: var(--font-hanken-grotesk);
+
+  --color-estate-green: var(--estate-green);
+  --color-ivory: var(--ivory);
+  --color-stone: var(--stone);
+  --color-sand-camel: var(--sand-camel);
+  --color-espresso: var(--espresso);
+  --color-ink: var(--ink);
+  --color-error: var(--error);
 }
 
 body {
-  background: #000;
-  color: #fff;
-  font-family: var(--font-bricolage), sans-serif;
+  background: var(--ivory);
+  color: var(--ink);
+  font-family: var(--font-sans);
+}
+
+/* Page gutter, respecting iOS safe areas */
+.gutter {
+  padding-left: max(var(--gutter), env(safe-area-inset-left));
+  padding-right: max(var(--gutter), env(safe-area-inset-right));
+}
+
+/* Type scale — mirrors the "Cazlae/…" text styles */
+.type-display {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: clamp(2.75rem, 1.983rem + 3.146vw, 4.5rem);
+  line-height: 1;
+  letter-spacing: -0.01em;
+}
+
+.type-h2 {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: clamp(1.875rem, 1.6rem + 1.124vw, 2.5rem);
+  line-height: 1.1;
+}
+
+.type-body-l {
+  font-size: 1.125rem;
+  line-height: 1.8125rem;
+}
+
+.type-body {
+  font-size: 1rem;
+  line-height: 1.625rem;
+}
+
+.type-small {
+  font-size: 0.875rem;
+  line-height: 1.375rem;
+}
+
+.type-caption {
+  font-size: 0.75rem;
+  line-height: 1.125rem;
+}
+
+.type-label {
+  font-size: 0.6875rem;
+  line-height: 0.9375rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.type-button {
+  font-size: 0.875rem;
+  line-height: 1;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+}
+
+/* Focus: 2px ring, estate-green on ivory / ivory on estate-green */
+:focus-visible {
+  outline: 2px solid var(--estate-green);
+  outline-offset: 2px;
+}
+
+.on-green :focus-visible {
+  outline-color: var(--ivory);
+}
+
+/* Consent checkbox (on estate-green) */
+.consent-box {
+  appearance: none;
+  flex: none;
+  width: 1.125rem;
+  height: 1.125rem;
+  border: 1px solid var(--ivory);
+  border-radius: 0;
+  background: transparent center / 0.75rem no-repeat;
+  cursor: pointer;
+}
+
+.consent-box:checked {
+  background-color: var(--ivory);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' fill='none' stroke='%231E3328' stroke-width='1.5'%3E%3Cpath d='M2 6.5 4.75 9 10 3'/%3E%3C/svg%3E");
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .hero-fade {
+    animation: hero-fade 400ms ease-out both;
+  }
+}
+
+@keyframes hero-fade {
+  from {
+    opacity: 0;
+  }
 }
