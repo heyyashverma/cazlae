@@ -13,9 +13,9 @@ const INK = "#121613";
 const SERIF = "'Instrument Serif', Georgia, 'Times New Roman', serif";
 const SANS = "'Hanken Grotesk', Arial, Helvetica, sans-serif";
 
-// TODO: business mailing address — required under CASL before the subscriber
-// email is switched on (to be confirmed by @OPS).
-const MAILING_ADDRESS = "[Business mailing address]";
+// TODO: replace with the full business mailing address once there is one —
+// a city alone doesn't meet the CASL mailing-address requirement.
+const MAILING_ADDRESS = "Toronto, Canada";
 // TODO: add a Privacy link to the subscriber footer once a privacy page exists.
 
 function escapeHtml(value: string) {

@@ -4,9 +4,7 @@ import nodemailer from "nodemailer";
 import SMTPTransport from "nodemailer/lib/smtp-transport";
 import { notificationEmail, subscriberEmail } from "../emails/waitlist";
 
-// TODO: switch on once the real mailing address is in emails/waitlist.ts
-// (required under CASL).
-const SEND_SUBSCRIBER_EMAIL = false;
+const SEND_SUBSCRIBER_EMAIL = true;
 
 type SubscribeState = {
   success: boolean;
