@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Instrument_Serif, Hanken_Grotesk } from "next/font/google";
 import { MotionProvider } from "./components/motion";
+import SmoothScroll from "./components/smooth-scroll";
 import "./globals.css";
 
 const instrumentSerif = Instrument_Serif({
@@ -72,6 +73,7 @@ export default function RootLayout({
       className={`${instrumentSerif.variable} ${hankenGrotesk.variable} h-full antialiased`}
     >
       <body className="relative min-h-full flex flex-col">
+        <SmoothScroll />
         <MotionProvider>{children}</MotionProvider>
       </body>
     </html>

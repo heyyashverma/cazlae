@@ -125,10 +125,6 @@ body {
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  html {
-    scroll-behavior: smooth;
-  }
-
   .wordmark-fade {
     animation: wordmark-fade 1200ms ease-out both;
   }
