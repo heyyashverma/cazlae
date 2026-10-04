@@ -77,7 +77,6 @@ export default function RootLayout({
       className={`${instrumentSerif.variable} ${hankenGrotesk.variable} h-full antialiased`}
     >
       <body className="relative min-h-full flex flex-col">
-        <div aria-hidden="true" className="grain" />
         <SmoothScroll />
         <MotionProvider>{children}</MotionProvider>
       </body>
