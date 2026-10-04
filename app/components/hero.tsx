@@ -7,6 +7,8 @@ import * as m from "motion/react-m";
 import heroLake from "../../public/hero-lake.webp";
 import { EASE } from "./motion";
 
+const HEADLINE = "Made to outlast trends";
+
 // Text rises out of a clipped line, one element after another.
 function Rise({
   children,
@@ -72,11 +74,27 @@ export default function Hero() {
         <p className="type-label">
           <Rise delay={0.3}>Drop 01</Rise>
         </p>
-        <h1 className="type-display mt-5">
-          <Rise delay={0.4}>Made to outlast trends</Rise>
+        {/* Read as one sentence; the per-word spans are presentation only */}
+        <h1 className="type-display mt-5" aria-label={HEADLINE}>
+          {HEADLINE.split(" ").map((word, index) => (
+            <span key={word} aria-hidden="true">
+              <m.span
+                className="inline-block will-change-[transform,filter,opacity]"
+                initial={{ opacity: 0, y: "0.45em", filter: "blur(14px)" }}
+                animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                transition={{
+                  duration: 1.3,
+                  ease: EASE,
+                  delay: 0.45 + index * 0.14,
+                }}
+              >
+                {word}
+              </m.span>{" "}
+            </span>
+          ))}
         </h1>
         <p className="type-body-l mt-5 text-ink">
-          <Rise delay={0.55}>Everyday essentials, precisely cut.</Rise>
+          <Rise delay={1.0}>Everyday essentials, precisely cut.</Rise>
         </p>
       </m.div>
 
@@ -85,7 +103,7 @@ export default function Hero() {
         className="type-button inline-flex h-[54px] items-center self-center bg-estate-green px-8 text-ivory transition-colors duration-200 hover:bg-ink md:self-start"
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1.1, ease: EASE, delay: 0.9 }}
+        transition={{ duration: 1.1, ease: EASE, delay: 1.3 }}
       >
         Join the waitlist
       </m.a>
