@@ -35,17 +35,21 @@ export const metadata: Metadata = {
     description,
     url: "https://cazlae.com",
     siteName: "cazlae",
-    // TODO: swap to /og.png (1200×630, "Open Graph link preview" frame in Figma)
-    // once it is exported to /public/og.png. This is still the pre-rebrand image.
-    images: [{ url: "/logo_opt.jpg", width: 800, height: 800, alt: "cazlae" }],
+    images: [
+      {
+        url: "/og.png",
+        width: 1200,
+        height: 630,
+        alt: "cazlae wordmark over a misty lake at dawn",
+      },
+    ],
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
     title,
     description,
-    // TODO: swap to /og.png, as above.
-    images: ["/logo_opt.jpg"],
+    images: ["/og.png"],
   },
   robots: {
     index: true,
@@ -73,6 +77,7 @@ export default function RootLayout({
       className={`${instrumentSerif.variable} ${hankenGrotesk.variable} h-full antialiased`}
     >
       <body className="relative min-h-full flex flex-col">
+        <div aria-hidden="true" className="grain" />
         <SmoothScroll />
         <MotionProvider>{children}</MotionProvider>
       </body>
