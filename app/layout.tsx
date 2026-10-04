@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Instrument_Serif, Hanken_Grotesk } from "next/font/google";
 import { MotionProvider } from "./components/motion";
 import SmoothScroll from "./components/smooth-scroll";
+import { SITE_URL } from "./site";
 import "./globals.css";
 
 const instrumentSerif = Instrument_Serif({
@@ -28,13 +29,15 @@ const description =
 export const metadata: Metadata = {
   title,
   description,
-  metadataBase: new URL("https://cazlae.com"),
+  metadataBase: new URL(SITE_URL),
+  applicationName: "cazlae",
   keywords: ["cazlae", "waitlist"],
   openGraph: {
     title,
     description,
-    url: "https://cazlae.com",
+    url: SITE_URL,
     siteName: "cazlae",
+    locale: "en_CA",
     images: [
       {
         url: "/og.png",
@@ -54,10 +57,18 @@ export const metadata: Metadata = {
   robots: {
     index: true,
     follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
   },
   alternates: {
-    canonical: "https://cazlae.com",
+    canonical: SITE_URL,
   },
+  // TODO: add `verification: { google: "…" }` once the site is added to
+  // Google Search Console.
 };
 
 export const viewport: Viewport = {

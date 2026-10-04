@@ -1,21 +1,53 @@
 import EmailForm from "./components/email-form";
 import Hero from "./components/hero";
 import RollText from "./components/roll-text";
+import { SITE_URL, SOCIALS } from "./site";
 import { Line, Reveal } from "./components/motion";
 import Wordmark from "./components/wordmark";
 
-const socials = [
-  { label: "Instagram", href: "https://instagram.com/shopcazlae" },
-  { label: "X", href: "https://x.com/cazlae" },
-  { label: "LinkedIn", href: "https://linkedin.com/company/cazlae" },
-  { label: "TikTok", href: "https://tiktok.com/@shopcazlae" },
-];
-
 const pieces = ["The tee", "The oversized tee", "The polo"];
+
+// Structured data: tells search engines who the brand is and which social
+// profiles belong to it.
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": `${SITE_URL}/#organization`,
+      name: "Cazlae",
+      url: SITE_URL,
+      logo: `${SITE_URL}/brand/cazlae-logo.png`,
+      image: `${SITE_URL}/og.png`,
+      description:
+        "Everyday essentials, precisely cut. Join the waitlist for Drop 01.",
+      address: {
+        "@type": "PostalAddress",
+        addressLocality: "Toronto",
+        addressCountry: "CA",
+      },
+      sameAs: SOCIALS.map((social) => social.href),
+    },
+    {
+      "@type": "WebSite",
+      "@id": `${SITE_URL}/#website`,
+      url: SITE_URL,
+      name: "cazlae",
+      inLanguage: "en-CA",
+      publisher: { "@id": `${SITE_URL}/#organization` },
+    },
+  ],
+};
 
 export default function Home() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c"),
+        }}
+      />
       {/* HEADER — wordmark only, sits over the hero image */}
       <header className="wordmark-fade gutter absolute inset-x-0 top-0 z-10 flex justify-center pt-[max(2rem,env(safe-area-inset-top))] text-estate-green md:justify-start md:pt-12">
         <Wordmark className="h-6 w-auto" />
@@ -82,7 +114,7 @@ export default function Home() {
           </div>
           <div className="type-small flex flex-col gap-3 md:items-end">
             <ul className="flex flex-wrap gap-x-6 gap-y-2">
-              {socials.map(({ label, href }) => (
+              {SOCIALS.map(({ label, href }) => (
                 <li key={label}>
                   <a
                     href={href}

@@ -2,9 +2,9 @@
 // file. Table layout and inline styles only, so it survives Outlook/Gmail.
 // Web fonts often fail there: serif falls back to Georgia, sans to Arial.
 
+import { SITE_URL } from "../site";
 import { WORDMARK_PNG_BASE64 } from "./wordmark";
 
-const SITE_URL = "https://cazlae.com";
 
 const WORDMARK_CID = "wordmark@cazlae.com";
 const attachments = [
