@@ -1,6 +1,6 @@
-import Image from "next/image";
-import heroLake from "../public/hero-lake.webp";
 import EmailForm from "./components/email-form";
+import Hero from "./components/hero";
+import { Line, Reveal } from "./components/motion";
 import Wordmark from "./components/wordmark";
 
 const socials = [
@@ -16,63 +16,44 @@ export default function Home() {
   return (
     <>
       {/* HEADER — wordmark only, sits over the hero image */}
-      <header className="gutter absolute inset-x-0 top-0 z-10 flex justify-center pt-[max(2rem,env(safe-area-inset-top))] text-estate-green md:justify-start md:pt-12">
+      <header className="wordmark-fade gutter absolute inset-x-0 top-0 z-10 flex justify-center pt-[max(2rem,env(safe-area-inset-top))] text-estate-green md:justify-start md:pt-12">
         <Wordmark className="h-6 w-auto" />
       </header>
 
       <main>
-        {/* HERO — full-screen image, anchored to the top so the sky the text sits
-            in is never cropped away; the action sits on the rock */}
-        <section className="gutter relative flex min-h-[max(100svh,40rem)] flex-col justify-between pt-24 pb-12 text-estate-green md:pt-32 md:pb-16">
-          {/* TODO: animate this still (drifting mist, slow push-in) */}
-          <Image
-            src={heroLake}
-            alt="Mist over a still lake at dawn, with pine forest on the far shore"
-            fill
-            preload
-            placeholder="blur"
-            sizes="100vw"
-            className="-z-10 object-cover object-top"
-          />
-          <div className="hero-fade">
-            <p className="type-label">Drop 01</p>
-            <h1 className="type-display mt-5">Made to outlast trends</h1>
-            <p className="type-body-l mt-6 text-ink">
-              Everyday essentials, precisely cut.
-            </p>
-          </div>
-          <a
-            href="#waitlist"
-            className="type-button hero-fade inline-flex h-[54px] items-center self-center bg-estate-green px-8 text-ivory transition-colors duration-200 hover:bg-ink md:self-start"
-          >
-            Join the waitlist
-          </a>
-        </section>
+        <Hero />
 
         {/* BRAND */}
         <section className="gutter py-24 md:py-36 lg:py-44">
           <div className="grid gap-8 lg:grid-cols-12">
-            <h2 className="type-h2 text-estate-green lg:col-span-5">
+            <Reveal as="h2" className="type-h2 text-estate-green lg:col-span-5">
               Fewer, better essentials.
-            </h2>
-            <p className="type-body-l max-w-xl lg:col-span-6 lg:col-start-7">
+            </Reveal>
+            <Reveal
+              as="p"
+              delay={0.15}
+              className="type-body-l max-w-xl lg:col-span-6 lg:col-start-7"
+            >
               The tee, the oversized tee, the polo — cut precisely in
               substantial cotton and a restrained palette built to work
               together, season after season. At a price that stays within
               reach.
-            </p>
+            </Reveal>
           </div>
 
           {/* The pieces, named but not shown */}
-          <ol className="mt-20 grid border-t border-stone md:mt-32 md:grid-cols-3">
+          <Line className="mt-20 md:mt-32" />
+          <ol className="grid md:grid-cols-3">
             {pieces.map((piece, index) => (
-              <li
+              <Reveal
+                as="li"
                 key={piece}
+                delay={index * 0.14}
                 className="border-b border-stone py-8 md:border-b-0 md:py-10"
               >
                 <p className="type-label text-espresso">0{index + 1}</p>
                 <p className="type-h3 mt-4 text-estate-green">{piece}</p>
-              </li>
+              </Reveal>
             ))}
           </ol>
         </section>
@@ -82,12 +63,12 @@ export default function Home() {
           id="waitlist"
           className="on-green gutter grid scroll-mt-0 gap-12 bg-estate-green py-24 text-ivory md:py-36 lg:grid-cols-12"
         >
-          <h2 className="type-h2 lg:col-span-5">
+          <Reveal as="h2" className="type-h2 lg:col-span-5">
             Join the waitlist for Drop 01.
-          </h2>
-          <div className="max-w-md lg:col-span-6 lg:col-start-7">
+          </Reveal>
+          <Reveal delay={0.15} className="max-w-md lg:col-span-6 lg:col-start-7">
             <EmailForm />
-          </div>
+          </Reveal>
         </section>
       </main>
 

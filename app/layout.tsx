@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Instrument_Serif, Hanken_Grotesk } from "next/font/google";
+import { MotionProvider } from "./components/motion";
 import "./globals.css";
 
 const instrumentSerif = Instrument_Serif({
@@ -70,7 +71,9 @@ export default function RootLayout({
       lang="en"
       className={`${instrumentSerif.variable} ${hankenGrotesk.variable} h-full antialiased`}
     >
-      <body className="relative min-h-full flex flex-col">{children}</body>
+      <body className="relative min-h-full flex flex-col">
+        <MotionProvider>{children}</MotionProvider>
+      </body>
     </html>
   );
 }

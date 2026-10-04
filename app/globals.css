@@ -129,12 +129,12 @@ body {
     scroll-behavior: smooth;
   }
 
-  .hero-fade {
-    animation: hero-fade 400ms ease-out both;
+  .wordmark-fade {
+    animation: wordmark-fade 1200ms ease-out both;
   }
 }
 
-@keyframes hero-fade {
+@keyframes wordmark-fade {
   from {
     opacity: 0;
   }
