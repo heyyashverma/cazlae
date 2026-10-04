@@ -6,6 +6,7 @@ import { useScroll, useTransform } from "motion/react";
 import * as m from "motion/react-m";
 import heroLake from "../../public/hero-lake.webp";
 import { EASE } from "./motion";
+import RollText from "./roll-text";
 
 const HEADLINE = "Made to outlast trends";
 
@@ -105,7 +106,7 @@ export default function Hero() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1.1, ease: EASE, delay: 1.3 }}
       >
-        Join the waitlist
+        <RollText>Join the waitlist</RollText>
       </m.a>
     </section>
   );

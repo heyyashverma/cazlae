@@ -1,5 +1,6 @@
 import EmailForm from "./components/email-form";
 import Hero from "./components/hero";
+import RollText from "./components/roll-text";
 import { Line, Reveal } from "./components/motion";
 import Wordmark from "./components/wordmark";
 
@@ -87,9 +88,9 @@ export default function Home() {
                     href={href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="underline underline-offset-4"
+                    className="inline-block border-b border-current"
                   >
-                    {label}
+                    <RollText>{label}</RollText>
                   </a>
                 </li>
               ))}
