@@ -55,6 +55,13 @@ body {
   line-height: 1.1;
 }
 
+.type-h3 {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: 1.75rem;
+  line-height: 2.125rem;
+}
+
 .type-body-l {
   font-size: 1.125rem;
   line-height: 1.8125rem;
@@ -118,6 +125,10 @@ body {
 }
 
 @media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+
   .hero-fade {
     animation: hero-fade 400ms ease-out both;
   }
