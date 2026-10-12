@@ -1,11 +1,9 @@
-import EmailForm from "./components/email-form";
+import Diptych from "./components/diptych";
 import Hero from "./components/hero";
-import RollText from "./components/roll-text";
-import { SITE_URL, SOCIALS } from "./site";
-import { Line, Reveal } from "./components/motion";
-import Wordmark from "./components/wordmark";
-
-const pieces = ["The tee", "The oversized tee", "The polo"];
+import ListSection from "./components/list-section";
+import { FadeUp, MaskLine } from "./components/motion";
+import SiteFooter from "./components/site-footer";
+import { SITE_DESCRIPTION, SITE_URL, SOCIALS } from "./site";
 
 // Structured data: tells search engines who the brand is and which social
 // profiles belong to it.
@@ -18,9 +16,8 @@ const jsonLd = {
       name: "Cazlae",
       url: SITE_URL,
       logo: `${SITE_URL}/brand/cazlae-logo.png`,
-      image: `${SITE_URL}/og.png`,
-      description:
-        "Everyday essentials, precisely cut. Join the waitlist for Drop 01.",
+      image: `${SITE_URL}/og.jpg`,
+      description: SITE_DESCRIPTION,
       address: {
         "@type": "PostalAddress",
         addressLocality: "Toronto",
@@ -48,92 +45,33 @@ export default function Home() {
           __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c"),
         }}
       />
-      {/* HEADER — wordmark only, sits over the hero image */}
-      <header className="wordmark-fade gutter absolute inset-x-0 top-0 z-10 flex justify-center pt-[max(2rem,env(safe-area-inset-top))] text-estate-green md:justify-start md:pt-12">
-        <Wordmark className="h-6 w-auto" />
-      </header>
 
       <main>
+        {/* 1 — Hero (with the fixed nav) */}
         <Hero />
 
-        {/* BRAND */}
-        <section className="gutter py-24 md:py-36 lg:py-44">
-          <div className="grid gap-8 lg:grid-cols-12">
-            <Reveal as="h2" className="type-h2 text-estate-green lg:col-span-5">
-              Fewer, better essentials.
-            </Reveal>
-            <Reveal
-              as="p"
-              delay={0.15}
-              className="type-body-l max-w-xl lg:col-span-6 lg:col-start-7"
-            >
-              The tee, the oversized tee, the polo — cut precisely in
-              substantial cotton and a restrained palette built to work
-              together, season after season. At a price that stays within
-              reach.
-            </Reveal>
-          </div>
-
-          {/* The pieces, named but not shown */}
-          <Line className="mt-20 md:mt-32" />
-          <ol className="grid md:grid-cols-3">
-            {pieces.map((piece, index) => (
-              <Reveal
-                as="li"
-                key={piece}
-                delay={index * 0.14}
-                className="border-b border-stone py-8 md:border-b-0 md:py-10"
-              >
-                <p className="type-label text-espresso">0{index + 1}</p>
-                <p className="type-h3 mt-4 text-estate-green">{piece}</p>
-              </Reveal>
-            ))}
-          </ol>
+        {/* 2 — Statement */}
+        <section className="gutter py-[7.5rem] text-center md:py-[13.75rem]">
+          <MaskLine className="serif type-statement text-ink">Made to be kept.</MaskLine>
+          <FadeUp
+            as="p"
+            delay={0.2}
+            className="type-body mx-auto mt-6 max-w-[32.5rem] text-espresso md:mt-10"
+          >
+            A new label from Toronto, making everyday clothes to a quiet
+            standard. The first collection is in progress.
+          </FadeUp>
         </section>
 
-        {/* WAITLIST */}
-        <section
-          id="waitlist"
-          className="on-green gutter grid scroll-mt-0 gap-12 bg-estate-green py-24 text-ivory md:py-36 lg:grid-cols-12"
-        >
-          <Reveal as="h2" className="type-h2 lg:col-span-5">
-            Join the waitlist for Drop 01.
-          </Reveal>
-          <Reveal delay={0.15} className="max-w-md lg:col-span-6 lg:col-start-7">
-            <EmailForm />
-          </Reveal>
-        </section>
+        {/* 3 — Two rooms */}
+        <Diptych />
+
+        {/* 4 — The list */}
+        <ListSection />
       </main>
 
-      {/* FOOTER */}
-      <footer className="gutter mt-auto pb-[max(2.5rem,env(safe-area-inset-bottom))] text-espresso">
-        <div className="flex flex-col gap-8 pt-12 md:flex-row md:items-end md:justify-between">
-          <div className="flex flex-col gap-4">
-            <Wordmark className="h-5 w-auto self-start text-estate-green" />
-            <p className="type-caption">Based in Toronto.</p>
-          </div>
-          <div className="type-small flex flex-col gap-3 md:items-end">
-            <ul className="flex flex-wrap gap-x-6 gap-y-2">
-              {SOCIALS.map(({ label, href }) => (
-                <li key={label}>
-                  <a
-                    href={href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-block border-b border-current"
-                  >
-                    <RollText>{label}</RollText>
-                  </a>
-                </li>
-              ))}
-            </ul>
-            <p>
-              © {new Date().getFullYear()} Cazlae
-              {/* TODO: add " · Privacy" link once a privacy page exists */}
-            </p>
-          </div>
-        </div>
-      </footer>
+      {/* 5 — Footer */}
+      <SiteFooter />
     </>
   );
 }

@@ -4,7 +4,9 @@ import nodemailer from "nodemailer";
 import SMTPTransport from "nodemailer/lib/smtp-transport";
 import { notificationEmail, subscriberEmail } from "../emails/waitlist";
 
-const SEND_SUBSCRIBER_EMAIL = true;
+// Off: the waitlist promises "One letter when the first collection opens.
+// Nothing else." A welcome email on signup would break that promise.
+const SEND_SUBSCRIBER_EMAIL = false;
 
 type SubscribeState = {
   success: boolean;
@@ -27,6 +29,13 @@ export async function subscribe(
     return { success: false, error: "Please enter a valid email address." };
   }
 
+  // Google Apps Script web app that appends the signup to the Google Sheet.
+  const sheetWebhookUrl = process.env.GOOGLE_SHEET_WEBHOOK_URL;
+  if (!sheetWebhookUrl) {
+    console.error("GOOGLE_SHEET_WEBHOOK_URL is not set");
+    return { success: false, error: "Something went wrong. Please try again." };
+  }
+
   try {
     const transportOptions: SMTPTransport.Options = {
       host: "smtp.zohocloud.ca",
@@ -42,7 +51,7 @@ export async function subscribe(
 
     // The Apps Script (google-apps-script/Code.gs) answers "duplicate" when the
     // address is already on the sheet; in that case no emails are sent again.
-    const sheetResponse = await fetch("https://script.google.com/macros/s/AKfycbw2mV9OJxG9BKdhIhgwYtgJ_KctJVxxRPfK_EWRDAczi5T7hi-iW_veuL5MqWhPaD84Sg/exec", {
+    const sheetResponse = await fetch(sheetWebhookUrl, {
       method: "POST",
       body: JSON.stringify({ email, consent }),
     });

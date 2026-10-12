@@ -1,12 +1,16 @@
 "use client";
 
-import { useRef, useState, useActionState } from "react";
+import { useActionState, useRef, useState } from "react";
+import Link from "next/link";
+import { AnimatePresence } from "motion/react";
+import * as m from "motion/react-m";
 import { subscribe } from "../actions/subscribe";
 
 const initialState = { success: false, error: null };
 
 const INVALID_EMAIL = "Enter a valid email address.";
 const GENERIC_ERROR = "Something went wrong. Please try again.";
+const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 // The server action's wording is left untouched; map it to the brand copy here.
 function serverErrorCopy(error: string | null) {
@@ -17,106 +21,122 @@ function serverErrorCopy(error: string | null) {
 export default function EmailForm() {
   const [state, formAction, isPending] = useActionState(subscribe, initialState);
   const [email, setEmail] = useState("");
-  const [consent, setConsent] = useState(false);
   const [clientError, setClientError] = useState<string | null>(null);
   const emailRef = useRef<HTMLInputElement>(null);
-  const consentRef = useRef<HTMLInputElement>(null);
 
   const error = clientError ?? serverErrorCopy(state.error);
-  const emailInvalid = error === INVALID_EMAIL;
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     setClientError(null);
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
+    if (!EMAIL_PATTERN.test(email.trim())) {
       event.preventDefault();
       setClientError(INVALID_EMAIL);
       emailRef.current?.focus();
-      return;
-    }
-    if (!consent) {
-      event.preventDefault();
-      consentRef.current?.reportValidity();
     }
   }
 
   return (
-    <div>
-      {!state.success && (
-        <form action={formAction} onSubmit={handleSubmit} noValidate>
-          <label htmlFor="email" className="type-small block font-medium">
-            Email address
-          </label>
-          <input
-            ref={emailRef}
-            id="email"
-            type="email"
-            name="email"
-            required
-            autoComplete="email"
-            placeholder="you@example.com"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            aria-invalid={emailInvalid}
-            aria-describedby="email-error"
-            className={`type-body mt-3 block h-[54px] w-full rounded-none bg-transparent px-6 text-ivory placeholder:text-ivory/60 ${
-              emailInvalid ? "border-2 border-ivory" : "border border-stone"
-            }`}
-          />
-          <div id="email-error" aria-live="polite">
-            {error && (
-              // --error fails contrast on estate-green, so it sits on an ivory chip
-              <p className="type-small mt-3 inline-block bg-ivory px-3 py-1.5 text-error">
-                {error}
-              </p>
-            )}
-          </div>
-
-          {/* Honeypot — hidden from people and assistive tech; see subscribe.ts */}
-          <div aria-hidden="true" className="hidden">
-            <label htmlFor="company">Company</label>
+    // Form and success message share one grid cell, so the crossfade never
+    // moves the layout.
+    <div className="grid">
+      <m.form
+        action={formAction}
+        onSubmit={handleSubmit}
+        noValidate
+        className="col-start-1 row-start-1"
+        animate={{ opacity: state.success ? 0 : 1 }}
+        transition={{ duration: 0.5 }}
+        aria-hidden={state.success || undefined}
+        inert={state.success || undefined}
+      >
+        <div className="flex items-end gap-[1.125rem] md:gap-7">
+          <div className="field relative min-w-0 flex-1 md:max-w-[23.75rem]">
+            <label htmlFor="email" className="sr-only">
+              Email address
+            </label>
             <input
-              id="company"
-              type="text"
-              name="company"
-              tabIndex={-1}
-              autoComplete="off"
-            />
-          </div>
-
-          {/* TODO: consent wording to be confirmed by @OPS (CASL) */}
-          <label className="type-caption mt-5 flex cursor-pointer items-start gap-3">
-            <input
-              ref={consentRef}
-              type="checkbox"
-              name="consent"
+              ref={emailRef}
+              id="email"
+              type="email"
+              name="email"
               required
-              checked={consent}
-              onChange={(e) => setConsent(e.target.checked)}
-              className="consent-box"
+              autoComplete="email"
+              inputMode="email"
+              placeholder="Email address"
+              value={email}
+              onChange={(e) => {
+                setEmail(e.target.value);
+                if (clientError) setClientError(null);
+              }}
+              aria-invalid={error === INVALID_EMAIL}
+              aria-describedby="email-error consent-note"
+              className="type-body block h-[2.875rem] w-full rounded-none bg-transparent text-ivory outline-none"
             />
-            <span>
-              I agree to receive emails from Cazlae about Drop 01 and future
-              releases. Unsubscribe anytime.
-            </span>
-          </label>
-
+            <span aria-hidden="true" className="field-line" />
+          </div>
           <button
             type="submit"
             disabled={isPending}
-            className="type-button mt-7 h-[54px] cursor-pointer rounded-none bg-ivory px-8 text-estate-green transition-colors duration-200 hover:bg-stone disabled:cursor-not-allowed disabled:bg-stone disabled:text-espresso"
+            className="type-small link-under relative flex h-[2.875rem] shrink-0 cursor-pointer items-center gap-2 text-ivory disabled:cursor-wait disabled:opacity-60"
           >
-            {isPending ? "Joining…" : "Join the waitlist"}
+            <span className="md:hidden">{isPending ? "Joining" : "Join"}</span>
+            <span className="hidden md:inline">
+              {isPending ? "Joining" : "Join the list"}
+            </span>
+            <span aria-hidden="true" className="arrow">
+              →
+            </span>
           </button>
-        </form>
-      )}
+        </div>
 
-      <div aria-live="polite">
-        {state.success && (
-          <p className="type-body-l">
-            You&apos;re on the list. We&apos;ll be in touch before Drop 01.
-          </p>
-        )}
-      </div>
+        {/* Quiet inline error, under the line */}
+        <div id="email-error" aria-live="polite" className="min-h-[1.625rem]">
+          <AnimatePresence>
+            {error && (
+              <m.p
+                className="type-fine pt-2 text-ivory"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.3 }}
+              >
+                {error}
+              </m.p>
+            )}
+          </AnimatePresence>
+        </div>
+
+        {/* Honeypot — hidden from people and assistive tech; see subscribe.ts */}
+        <div aria-hidden="true" className="hidden">
+          <label htmlFor="company">Company</label>
+          <input id="company" type="text" name="company" tabIndex={-1} autoComplete="off" />
+        </div>
+
+        {/* Submitting is the consent action (CASL). Wording to be confirmed by @OPS. */}
+        <input type="hidden" name="consent" value="on" />
+        <p
+          id="consent-note"
+          className="type-fine mt-1 max-w-[30rem] text-ivory/75"
+        >
+          By joining, you agree to receive emails from cazlae. Unsubscribe at
+          any time.{" "}
+          <br className="hidden md:inline" />
+          <Link href="/privacy" className="link-under">
+            Privacy
+          </Link>
+        </p>
+      </m.form>
+
+      <m.p
+        role="status"
+        className="type-body col-start-1 row-start-1 self-center text-ivory"
+        initial={false}
+        animate={{ opacity: state.success ? 1 : 0 }}
+        transition={{ duration: 0.5, delay: state.success ? 0.2 : 0 }}
+        aria-hidden={!state.success || undefined}
+      >
+        {state.success ? "You’re on the list." : ""}
+      </m.p>
     </div>
   );
 }
