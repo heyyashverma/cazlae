@@ -4,9 +4,7 @@ import nodemailer from "nodemailer";
 import SMTPTransport from "nodemailer/lib/smtp-transport";
 import { notificationEmail, subscriberEmail } from "../emails/waitlist";
 
-// Off: the waitlist promises "One letter when the first collection opens.
-// Nothing else." A welcome email on signup would break that promise.
-const SEND_SUBSCRIBER_EMAIL = false;
+const SEND_SUBSCRIBER_EMAIL = true;
 
 type SubscribeState = {
   success: boolean;
