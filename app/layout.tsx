@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Instrument_Serif, Hanken_Grotesk } from "next/font/google";
 import { MotionProvider } from "./components/motion";
 import SmoothScroll from "./components/smooth-scroll";
-import { SITE_URL } from "./site";
+import { SITE_DESCRIPTION, SITE_TITLE, SITE_URL } from "./site";
 import "./globals.css";
 
 const instrumentSerif = Instrument_Serif({
@@ -21,9 +21,8 @@ const hankenGrotesk = Hanken_Grotesk({
   fallback: ["system-ui", "sans-serif"],
 });
 
-const title = "cazlae — Made to outlast trends";
-const description =
-  "Everyday essentials, precisely cut. Join the waitlist for Drop 01.";
+const title = SITE_TITLE;
+const description = SITE_DESCRIPTION;
 
 // TODO: favicon (app/favicon.ico) left unchanged — the monogram isn't decided yet.
 export const metadata: Metadata = {
@@ -31,7 +30,7 @@ export const metadata: Metadata = {
   description,
   metadataBase: new URL(SITE_URL),
   applicationName: "cazlae",
-  keywords: ["cazlae", "waitlist"],
+  keywords: ["cazlae", "Toronto", "clothing label"],
   openGraph: {
     title,
     description,
@@ -40,10 +39,10 @@ export const metadata: Metadata = {
     locale: "en_CA",
     images: [
       {
-        url: "/og.png",
+        url: "/og.jpg",
         width: 1200,
         height: 630,
-        alt: "cazlae wordmark over a misty lake at dawn",
+        alt: "The cazlae wordmark above a stone house in a misty field",
       },
     ],
     type: "website",
@@ -52,7 +51,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title,
     description,
-    images: ["/og.png"],
+    images: ["/og.jpg"],
   },
   robots: {
     index: true,
@@ -72,7 +71,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#1E3328",
+  themeColor: "#F5F0E8",
   colorScheme: "light",
   viewportFit: "cover",
 };
@@ -90,6 +89,8 @@ export default function RootLayout({
       <body className="relative min-h-full flex flex-col">
         <SmoothScroll />
         <MotionProvider>{children}</MotionProvider>
+        {/* Fine film grain over the whole page, to match Instagram */}
+        <div aria-hidden="true" className="grain" />
       </body>
     </html>
   );

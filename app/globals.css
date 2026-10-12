@@ -4,14 +4,22 @@
   color-scheme: light;
 
   --estate-green: #1e3328; /* signature colour */
-  --ivory: #f5f0e8; /* base / canvas */
+  --ivory: #f5f0e8; /* page */
   --stone: #d8cfc0; /* secondary neutral */
   --sand-camel: #c4b49a; /* accent neutral — never as text on ivory */
-  --espresso: #3d3935; /* secondary text */
-  --ink: #121613; /* primary text */
-  --error: #9b2c2c; /* form errors only, not a brand colour */
+  --espresso: #3d3935; /* body text */
+  --ink: #121613; /* headlines, text on the hero */
 
-  --gutter: clamp(1.5rem, 5.33vw, 4rem);
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  /* 48 px desktop, 20–24 px mobile */
+  --gutter: clamp(1.25rem, 0.75rem + 2.5vw, 3rem);
+  --nav-h: 4rem;
+}
+
+@media (min-width: 768px) {
+  :root {
+    --nav-h: 4.75rem;
+  }
 }
 
 @theme inline {
@@ -24,7 +32,10 @@
   --color-sand-camel: var(--sand-camel);
   --color-espresso: var(--espresso);
   --color-ink: var(--ink);
-  --color-error: var(--error);
+}
+
+html {
+  background: var(--ivory);
 }
 
 body {
@@ -39,132 +50,191 @@ body {
   padding-right: max(var(--gutter), env(safe-area-inset-right));
 }
 
-/* Type scale — mirrors the "Cazlae/…" text styles */
-.type-display {
+/* ── Type ───────────────────────────────────────────────────────────── */
+/* Instrument Serif: Regular only, −0.02em, never letter-spaced. */
+.serif {
   font-family: var(--font-serif);
   font-weight: 400;
-  font-size: clamp(2.75rem, 1.983rem + 3.146vw, 4.5rem);
+  letter-spacing: -0.02em;
+}
+
+/* "Made to be kept." — 56 mobile → 120 desktop */
+.type-statement {
+  font-size: clamp(3.5rem, 8.333vw, 7.5rem);
   line-height: 1;
-  letter-spacing: -0.01em;
 }
 
+/* List H2 — 48 mobile → 96 desktop */
 .type-h2 {
-  font-family: var(--font-serif);
-  font-weight: 400;
-  font-size: clamp(1.875rem, 1.6rem + 1.124vw, 2.5rem);
-  line-height: 1.1;
+  font-size: clamp(3rem, 6.667vw, 6rem);
+  line-height: 0.98;
 }
 
-.type-h3 {
-  font-family: var(--font-serif);
-  font-weight: 400;
-  font-size: 1.75rem;
-  line-height: 2.125rem;
-}
-
-.type-body-l {
-  font-size: 1.125rem;
-  line-height: 1.8125rem;
-}
-
+/* Body — 16 mobile, 18 desktop */
 .type-body {
   font-size: 1rem;
-  line-height: 1.625rem;
+  line-height: 1.6;
+}
+
+@media (min-width: 768px) {
+  .type-body {
+    font-size: 1.125rem;
+    line-height: 1.6;
+  }
 }
 
 .type-small {
   font-size: 0.875rem;
-  line-height: 1.375rem;
+  line-height: 1.25rem;
 }
 
-.type-caption {
-  font-size: 0.75rem;
+.type-fine {
+  font-size: 0.8125rem;
   line-height: 1.125rem;
 }
 
-.type-label {
-  font-size: 0.6875rem;
-  line-height: 0.9375rem;
-  font-weight: 500;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
+/* Wordmark sizes, matched to the Figma text sizes (glyph width ≈ 1.97 × size) */
+.wordmark-hero {
+  width: clamp(12.8rem, 35.5vw, 32rem); /* 104 → 260 */
 }
 
-.type-button {
-  font-size: 0.875rem;
-  line-height: 1;
-  font-weight: 500;
-  letter-spacing: 0.04em;
+.wordmark-footer {
+  width: 6.9rem; /* 56 */
 }
 
-/* Focus: 2px ring, estate-green on ivory / ivory on estate-green */
+@media (min-width: 768px) {
+  .wordmark-footer {
+    width: 8.875rem; /* 72 */
+  }
+}
+
+/* ── Focus ──────────────────────────────────────────────────────────── */
 :focus-visible {
-  outline: 2px solid var(--estate-green);
-  outline-offset: 2px;
+  outline: 1px solid var(--ink);
+  outline-offset: 4px;
 }
 
 .on-green :focus-visible {
   outline-color: var(--ivory);
 }
 
-/* Link hover: letters roll up one by one (see components/roll-text.tsx) */
+/* ── Links ──────────────────────────────────────────────────────────── */
+/* Underline draws in from the left and retracts to the right. */
+.link-line {
+  position: relative;
+  display: inline-block;
+}
+
+.link-line::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -2px;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.45s var(--ease);
+}
+
+.link-line:hover::after,
+.link-line:focus-visible::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+/* A permanently underlined link (nav "Join the list", Privacy) */
+.link-under {
+  border-bottom: 1px solid currentColor;
+  padding-bottom: 2px;
+}
+
+/* Nav links: the text rolls up and a copy rolls in (components/roll-text.tsx) */
 .roll {
-  display: inline-flex;
+  position: relative;
+  display: inline-block;
   overflow: hidden;
-  line-height: 1.5;
   vertical-align: bottom;
 }
 
-.roll-char {
-  position: relative;
-  display: inline-block;
-  white-space: pre;
+.roll-inner {
+  display: block;
 }
 
-.roll-char::after {
-  content: attr(data-char);
+.roll-inner::after {
+  content: attr(data-text);
   position: absolute;
   top: 100%;
   left: 0;
 }
 
 @media (hover: hover) and (prefers-reduced-motion: no-preference) {
-  .roll-char {
-    transition: transform 520ms cubic-bezier(0.22, 1, 0.36, 1);
-    transition-delay: calc(var(--i) * 24ms);
+  .roll-inner {
+    transition: transform 0.35s var(--ease);
   }
 
-  a:hover .roll-char,
-  a:focus-visible .roll-char {
+  a:hover .roll-inner,
+  a:focus-visible .roll-inner {
     transform: translateY(-100%);
   }
 }
 
-/* Consent checkbox (on estate-green) */
-.consent-box {
-  appearance: none;
-  flex: none;
-  width: 1.125rem;
-  height: 1.125rem;
-  border: 1px solid var(--ivory);
-  border-radius: 0;
-  background: transparent center / 0.75rem no-repeat;
-  cursor: pointer;
+/* ── Form ───────────────────────────────────────────────────────────── */
+.field-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: color-mix(in srgb, var(--ivory) 55%, transparent);
+  transform-origin: bottom;
+  transition:
+    transform 0.3s var(--ease),
+    background-color 0.3s var(--ease);
 }
 
-.consent-box:checked {
-  background-color: var(--ivory);
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' fill='none' stroke='%231E3328' stroke-width='1.5'%3E%3Cpath d='M2 6.5 4.75 9 10 3'/%3E%3C/svg%3E");
+.field:focus-within .field-line {
+  transform: scaleY(1.5);
+  background: var(--ivory);
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .wordmark-fade {
-    animation: wordmark-fade 1200ms ease-out both;
+.field input::placeholder {
+  color: color-mix(in srgb, var(--ivory) 72%, transparent);
+  opacity: 1;
+}
+
+/* Chrome autofill would otherwise paint the field pale yellow */
+.field input:-webkit-autofill {
+  -webkit-text-fill-color: var(--ivory);
+  box-shadow: 0 0 0 100px var(--estate-green) inset;
+  caret-color: var(--ivory);
+}
+
+.arrow {
+  display: inline-block;
+  transition: transform 0.35s var(--ease);
+}
+
+@media (hover: hover) {
+  button:hover .arrow,
+  button:focus-visible .arrow {
+    transform: translateX(4px);
   }
 }
 
-@keyframes wordmark-fade {
-  from {
-    opacity: 0;
-  }
+/* ── Grain ──────────────────────────────────────────────────────────── */
+.grain {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  background-image: url("/grain.png");
+  background-size: 160px 160px;
+  opacity: 0.03;
+}
+
+/* The email field's own line (1 → 1.5 px, full Ivory) is its focus state */
+.field input:focus-visible {
+  outline: none;
 }
