@@ -2,6 +2,9 @@
 // canonical URLs, the sitemap and share images all use the www form.
 export const SITE_URL = "https://www.cazlae.com";
 
+// Bump when page content changes, so search engines see an honest lastmod.
+export const CONTENT_UPDATED = new Date("2026-10-12");
+
 export const SITE_TITLE = "cazlae — Made to be kept.";
 export const SITE_DESCRIPTION =
   "A new label from Toronto, making everyday clothes to a quiet standard. The first collection is in progress.";

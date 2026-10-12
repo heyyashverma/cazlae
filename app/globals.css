@@ -238,3 +238,9 @@ body {
 .field input:focus-visible {
   outline: none;
 }
+
+/* Headlines never leave a single word alone on the last line */
+h1,
+h2 {
+  text-wrap: balance;
+}

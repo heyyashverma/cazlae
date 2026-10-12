@@ -9,6 +9,14 @@ export const metadata: Metadata = {
   title: "Privacy — cazlae",
   description: "How cazlae collects and uses your email address.",
   alternates: { canonical: `${SITE_URL}/privacy` },
+  openGraph: {
+    title: "Privacy — cazlae",
+    url: `${SITE_URL}/privacy`,
+    siteName: "cazlae",
+    locale: "en_CA",
+    type: "website",
+    images: [{ url: "/og.jpg", width: 1200, height: 630 }],
+  },
 };
 
 const UPDATED = "12 October 2026";
@@ -46,8 +54,8 @@ export default function PrivacyPage() {
             <section>
               <h2>Why</h2>
               <p>
-                To confirm you&apos;ve joined, and to write to you when the
-                first collection opens. We don&apos;t sell, rent or share your
+                To confirm you’ve joined, and to write to you when the
+                first collection opens. We don’t sell, rent or share your
                 email address with anyone for their own use.
               </p>
             </section>
