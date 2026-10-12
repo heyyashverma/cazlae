@@ -24,7 +24,8 @@ const hankenGrotesk = Hanken_Grotesk({
 const title = SITE_TITLE;
 const description = SITE_DESCRIPTION;
 
-// TODO: favicon (app/favicon.ico) left unchanged — the monogram isn't decided yet.
+// Icons come from the file conventions: app/favicon.ico, app/icon.svg,
+// app/apple-icon.png and app/manifest.ts (Figma page "Favicon — v1 2026-10-12").
 export const metadata: Metadata = {
   title,
   description,
@@ -83,7 +84,7 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      lang="en"
+      lang="en-CA"
       className={`${instrumentSerif.variable} ${hankenGrotesk.variable} h-full antialiased`}
     >
       <body className="relative min-h-full flex flex-col">

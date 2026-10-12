@@ -1,17 +1,17 @@
 import type { MetadataRoute } from "next";
-import { SITE_URL } from "./site";
+import { CONTENT_UPDATED, SITE_URL } from "./site";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   return [
     {
       url: SITE_URL,
-      lastModified: new Date(),
+      lastModified: CONTENT_UPDATED,
       changeFrequency: "monthly",
       priority: 1,
     },
     {
       url: `${SITE_URL}/privacy`,
-      lastModified: new Date(),
+      lastModified: CONTENT_UPDATED,
       changeFrequency: "yearly",
       priority: 0.3,
     },
