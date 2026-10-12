@@ -52,7 +52,7 @@ export default function ListSection() {
             Be the first to know.
           </m.h2>
           <m.p className="type-body mt-[1.125rem] md:mt-7" {...stagger(2)}>
-            One letter when the first collection opens. Nothing else.
+            A note to confirm, then one letter when the first collection opens.
           </m.p>
           <m.div className="mt-7 md:mt-11" {...stagger(3)}>
             <EmailForm />

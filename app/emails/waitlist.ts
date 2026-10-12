@@ -28,7 +28,6 @@ const SANS = "'Hanken Grotesk', Arial, Helvetica, sans-serif";
 // TODO: replace with the full business mailing address once there is one —
 // a city alone doesn't meet the CASL mailing-address requirement.
 const MAILING_ADDRESS = "Toronto, Canada";
-// TODO: add a Privacy link to the subscriber footer once a privacy page exists.
 
 function escapeHtml(value: string) {
   return value
@@ -102,24 +101,27 @@ function shell({ preheader, label, headline, bodyHtml, cta, footerHtml }: Shell)
 </html>`;
 }
 
-/** Sent to a new subscriber. Not switched on yet — see subscribe.ts. */
+/** Sent to a new subscriber on signup (see SEND_SUBSCRIBER_EMAIL in subscribe.ts). */
 export function subscriberEmail(replyAddress: string) {
   // Interim unsubscribe: a reply to the brand inbox, handled by hand.
   const unsubscribeUrl = `mailto:${replyAddress}?subject=Unsubscribe`;
-  const subject = "The first drop is almost here.";
+  const privacyUrl = `${SITE_URL}/privacy`;
+  // A confirmation only. The page promises one letter when the first
+  // collection opens, so this says nothing about products.
+  const subject = "You’re on the list.";
   const body =
-    "Three essentials in cotton. You’re on the list, so you’ll hear before anyone else.";
+    "Thank you for joining. The first collection is in progress. When it opens, you’ll receive one letter from us, before anyone else. Until then, nothing more.";
   return {
     subject,
-    text: `${subject}\n\n${body}\n\nPreview the collection: ${SITE_URL}\n\nCazlae · ${MAILING_ADDRESS}\nTo unsubscribe, reply to this email with "Unsubscribe".`,
+    text: `${subject}\n\n${body}\n\ncazlae · ${MAILING_ADDRESS}\nPrivacy: ${privacyUrl}\nTo unsubscribe, reply to this email with "Unsubscribe".`,
     attachments,
     html: shell({
       preheader: body,
-      label: "Drop 01",
+      label: "The list",
       headline: subject,
       bodyHtml: body,
-      cta: { label: "Preview the collection", href: SITE_URL },
-      footerHtml: `Cazlae · ${MAILING_ADDRESS}<br>
+      footerHtml: `cazlae · ${MAILING_ADDRESS}<br>
+                <a href="${privacyUrl}" style="color:${ESPRESSO};text-decoration:underline">Privacy</a> ·
                 <a href="${unsubscribeUrl}" style="color:${ESPRESSO};text-decoration:underline">Unsubscribe</a>`,
     }),
   };

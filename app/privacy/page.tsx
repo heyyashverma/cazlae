@@ -46,9 +46,9 @@ export default function PrivacyPage() {
             <section>
               <h2>Why</h2>
               <p>
-                To write to you when the first collection opens. We don&apos;t
-                sell, rent or share your email address with anyone for their
-                own use.
+                To confirm you&apos;ve joined, and to write to you when the
+                first collection opens. We don&apos;t sell, rent or share your
+                email address with anyone for their own use.
               </p>
             </section>
 
